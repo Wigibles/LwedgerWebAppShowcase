@@ -2,6 +2,7 @@ import React from 'react';
 import { useApp } from './context/AppContext';
 import { AppNavbar } from './components/app/AppNavbar';
 import { HeroSection } from './components/showcase/HeroSection';
+import { InteractivePhoneMockup } from './components/showcase/InteractivePhoneMockup';
 import { FeatureGrid } from './components/showcase/FeatureGrid';
 import { BankEcosystemShowcase } from './components/showcase/BankEcosystemShowcase';
 import { Paycheck503020Explainer } from './components/showcase/Paycheck503020Explainer';
@@ -48,6 +49,7 @@ export const AppContent: React.FC = () => {
         {viewMode === 'showcase' ? (
           <div>
             <HeroSection />
+            <InteractivePhoneMockup />
             <FeatureGrid />
             <BankEcosystemShowcase />
             <Paycheck503020Explainer />

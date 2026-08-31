@@ -85,6 +85,9 @@ export const AppNavbar: React.FC = () => {
           </nav>
         ) : (
           <div className="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-300">
+            <a href="#app-mockup" className="text-amber-300 hover:text-amber-200 transition-colors flex items-center gap-1">
+              <span>📱 Android UI Mockup</span>
+            </a>
             <a href="#features" className="hover:text-amber-400 transition-colors">Features</a>
             <a href="#banking" className="hover:text-amber-400 transition-colors">27+ PH Banks</a>
             <a href="#budgeting" className="hover:text-amber-400 transition-colors">50/30/20 Budget</a>

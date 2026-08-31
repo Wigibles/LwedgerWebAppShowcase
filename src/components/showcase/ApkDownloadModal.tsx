@@ -10,23 +10,20 @@ export const ApkDownloadModal: React.FC = () => {
 
   if (!isApkModalOpen) return null;
 
-  const handleDownload = () => {
+  const handleDownload = (fileName: string = 'lwedger.apk') => {
     setDownloadStarted(true);
-    // Create a mock download trigger for app-debug.apk
-    const element = document.createElement('a');
-    const file = new Blob([
-      'Lwedger Native Android Package v1.0\nArchitecture: arm64-v8a, armeabi-v7a, x86_64\nTarget: Android 14+ (API 34)\nBuilt with Kotlin & Jetpack Compose'
-    ], { type: 'application/vnd.android.package-archive' });
-    element.href = URL.createObjectURL(file);
-    element.download = 'Lwedger-v1.0-release.apk';
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+    const link = document.createElement('a');
+    link.href = `/${fileName}`;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     setTimeout(() => setDownloadStarted(false), 3000);
   };
 
-  const copyAdbCommand = () => {
-    navigator.clipboard.writeText('adb install app-debug.apk');
+
+  const copyAdbCommand = (cmd: string = 'adb install -r lwedger.apk') => {
+    navigator.clipboard.writeText(cmd);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
   };
@@ -56,7 +53,7 @@ export const ApkDownloadModal: React.FC = () => {
             <div className="flex items-center gap-2">
               <h3 className="text-xl font-bold text-white">Lwedger for Android</h3>
               <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-bold">
-                v1.0 Stable
+                Ready to Install
               </span>
             </div>
             <p className="text-xs text-slate-400">Offline-first Jetpack Compose application</p>
@@ -70,8 +67,8 @@ export const ApkDownloadModal: React.FC = () => {
             <span className="font-mono text-white">com.luigi.lwedger</span>
           </div>
           <div className="flex justify-between text-slate-400">
-            <span>Tech Stack:</span>
-            <span className="font-mono text-amber-300">Kotlin, Compose, Room, Glance</span>
+            <span>Package File:</span>
+            <span className="font-mono text-amber-300">lwedger.apk (~23.6 MB)</span>
           </div>
           <div className="flex justify-between text-slate-400">
             <span>Target OS:</span>
@@ -84,41 +81,44 @@ export const ApkDownloadModal: React.FC = () => {
         </div>
 
         {/* Download Button */}
-        <div className="mt-6">
+        <div className="mt-6 space-y-2.5">
           <button
-            onClick={handleDownload}
-            className="w-full py-4 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 text-slate-950 font-bold text-base flex items-center justify-center gap-2 shadow-glow-gold hover:opacity-95 transition-all cursor-pointer"
+            onClick={() => handleDownload('lwedger.apk')}
+            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 text-slate-950 font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-glow-gold hover:opacity-95 transition-all cursor-pointer"
           >
             {downloadStarted ? (
               <>
                 <Check className="w-5 h-5" />
-                <span>Downloading Lwedger APK...</span>
+                <span>Downloading lwedger.apk...</span>
               </>
             ) : (
               <>
                 <Download className="w-5 h-5" />
-                <span>Download APK (app-debug.apk)</span>
+                <span>Download Android APK (lwedger.apk)</span>
               </>
             )}
           </button>
         </div>
 
         {/* ADB Sideload instruction */}
-        <div className="mt-5 p-3 rounded-xl bg-black/40 border border-white/5">
-          <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
-            <span className="flex items-center gap-1">
-              <Terminal className="w-3.5 h-3.5" /> Sideload via Terminal / ADB:
+        <div className="mt-5 p-3.5 rounded-xl bg-black/40 border border-white/5 space-y-2">
+          <div className="flex items-center justify-between text-xs text-slate-400">
+            <span className="flex items-center gap-1.5 font-medium">
+              <Terminal className="w-3.5 h-3.5 text-amber-400" /> Sideload via Terminal / ADB:
             </span>
             <button
-              onClick={copyAdbCommand}
-              className="text-amber-400 hover:text-amber-300 font-semibold cursor-pointer"
+              onClick={() => copyAdbCommand('adb install -r lwedger.apk')}
+              className="text-amber-400 hover:text-amber-300 font-semibold cursor-pointer text-xs"
             >
-              {isCopied ? 'Copied!' : 'Copy'}
+              {isCopied ? 'Copied!' : 'Copy Command'}
             </button>
           </div>
-          <code className="text-[11px] font-mono text-emerald-300 block bg-surface-300 p-2 rounded-lg select-all">
-            adb install app-debug.apk
+          <code className="text-[11px] font-mono text-emerald-300 block bg-surface-300/80 p-2.5 rounded-lg select-all overflow-x-auto">
+            adb install -r lwedger.apk
           </code>
+          <p className="text-[10px] text-slate-500 text-center">
+            Stored in <span className="font-mono text-emerald-400">public/lwedger.apk</span> ready for instant delivery.
+          </p>
         </div>
       </motion.div>
     </div>
